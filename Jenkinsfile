@@ -1,22 +1,21 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'chmod +x ./mvnw'
-        sh './mvnw wrapper:wrapper'
-      }
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t my-time-app .'
+            }
+        }
     }
-    stage('Run Tests') {
-      steps {
-        sh 'chmod +x ./mvnw'
-        sh './mvnw test'
-      }
-    }
-    stage('Clean WS') {
-      steps {
-        cleanWs()
-      }
-    }
-  }
 }
