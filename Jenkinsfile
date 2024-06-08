@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        choice(name: 'ENVIRONMENT',description: 'Environment to deploy')
+        choice(name: 'ENVIRONMENT', description: 'Environment to deploy', choices: ['dev', 'qa', 'prod'])
     }
     stages {
         stage('Build') {
@@ -17,7 +17,7 @@ pipeline {
         stage('Code Coverage') {
             steps {
                 bat 'mvn jacoco:report'
-                publishHTML (target: [
+                publishHTML(target: [
                     reportDir: 'target/site/jacoco',
                     reportFiles: 'index.html',
                     reportName: 'Code Coverage Report'
@@ -29,5 +29,5 @@ pipeline {
                 bat 'docker build -t my-time-app .'
             }
         }
-
+    }
 }
