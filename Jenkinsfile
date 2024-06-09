@@ -30,12 +30,12 @@ pipeline {
             }
         }
     }
-    post {
-        success {
-            githubNotify context: 'CI build', description: 'Build succeeded', status: 'SUCCESS'
-        }
-        failure {
-            githubNotify context: 'CI build', description: 'Build failed', status: 'FAILURE'
-        }
-    }
+//     post {
+//         success {
+//             githubNotify context: 'CI build', description: 'Build succeeded', status: 'SUCCESS'
+//         }
+//         failure {
+//             githubNotify context: 'CI build', description: 'Build failed', status: 'FAILURE'
+//         }
+//     }
 }
