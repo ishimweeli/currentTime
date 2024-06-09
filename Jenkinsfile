@@ -14,29 +14,35 @@ pipeline {
                 bat 'mvn test'
             }
         }
-        stage('Code Coverage') {
-            steps {
-                bat 'mvn jacoco:report'
-                publishCoverageReport('**/target/site/jacoco/jacoco.xml'
-                publishHTML(target: [
-                    reportDir: 'target/site/jacoco',
-                    reportFiles: 'index.html',
-                    reportName: 'Code Coverage Report'
-                ])
-            }
-        }
+      stages {
+              stage('Code Coverage and Test Results') {
+                  steps {
+                      // Generate code coverage report
+                      bat 'mvn jacoco:report'
+
+                      // Publish code coverage XML report
+                      publishCoverageReport('**/target/site/jacoco/jacoco.xml')
+
+                      // Publish code coverage HTML report
+                      publishHTML(target: [
+                          allowMissing: false,
+                          alwaysLinkToLastBuild: true,
+                          keepAll: true,
+                          reportDir: 'target/site/jacoco',
+                          reportFiles: 'index.html',
+                          reportName: 'Code Coverage Report (HTML)'
+                      ])
+
+                      // Publish JUnit test results XML report
+                      junit '**/target/surefire-reports/*.xml'
+                  }
+              }
+          }
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t my-time-app .'
             }
         }
     }
-//     post {
-//         success {
-//             githubNotify context: 'CI build', description: 'Build succeeded', status: 'SUCCESS'
-//         }
-//         failure {
-//             githubNotify context: 'CI build', description: 'Build failed', status: 'FAILURE'
-//         }
-//     }
+
 }
