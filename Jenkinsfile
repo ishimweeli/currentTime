@@ -19,8 +19,11 @@ pipeline {
                 // Generate code coverage report
                 bat 'mvn jacoco:report'
 
-                // Publish code coverage XML report
-                publishCoverageReport('**/target/site/jacoco/jacoco.xml')
+                // Publish code coverage report
+                jacoco execPattern: '**/target/jacoco.exec',
+                       classPattern: '**/target/classes',
+                       sourcePattern: '**/src/main/java',
+                       exclusionPattern: '**/target/test-classes'
 
                 // Publish code coverage HTML report
                 publishHTML(target: [
