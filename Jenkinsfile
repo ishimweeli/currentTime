@@ -17,6 +17,7 @@ pipeline {
         stage('Code Coverage') {
             steps {
                 bat 'mvn jacoco:report'
+                publishCoverageReport('**/target/site/jacoco/jacoco.xml'
                 publishHTML(target: [
                     reportDir: 'target/site/jacoco',
                     reportFiles: 'index.html',

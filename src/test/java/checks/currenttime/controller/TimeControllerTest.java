@@ -8,20 +8,15 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TimeControllerTest {
-//
-//    @Autowired
-//    private TestRestTemplate restTemplate;
-//
-//    @Test
-//    public void testGetCurrentTime() {
-//        ResponseEntity<String> response = restTemplate.getForEntity("/time", String.class);
-//        assertThat(response.getBody()).startsWith("Current time is: ");
-//    }
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
     @Test
-    public void testTrueIsTrue() {
-        // Asserting that true is true
-        assertThat(true).isTrue();
+    public void testGetCurrentTime() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/time", String.class);
+        assertThat(response.getBody()).startsWith("Current time is: ");
     }
 }
